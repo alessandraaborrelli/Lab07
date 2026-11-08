@@ -1,4 +1,6 @@
 import flet as ft
+from flet.controls import alignment
+
 from UI.alert import AlertManager
 
 '''
@@ -37,9 +39,16 @@ class View:
 
         # --- Sezione 2: Filtraggio ---
         # TODO
+        # menu a tendina per la biblioteca
+        self.menu_biblioteca = ft.Dropdown(label = "Biblioteca", width = 300, on_select = self.controller.gestisci_biblioteca)
+        # menu a tendina per il genere
+        self.menu_genere = ft.Dropdown(label = "Genere", width = 300, on_select = self.controller.gestisci_genere)
 
         # Sezione 3: Libri
         # TODO
+        self.bottone_mostra_libri = ft.Button(content = ft.Text( "Mostra Libri"), on_click = self.controller.mostra_libri)
+        # area di testo a scorrimento per mostrare i libri
+        self.lista_libri = ft.ListView(expand = True)
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -54,13 +63,23 @@ class View:
 
             # Sezione 2: Filtraggio
             # TODO
+            ft.Row(controls = [self.menu_biblioteca, self.menu_genere], alignment = ft.MainAxisAlignment.CENTER),
+            ft.Row(controls = [self.bottone_mostra_libri], alignment = ft.MainAxisAlignment.CENTER),
+            ft.Divider(),
 
             # Sezione 3: Libri
             # TODO
+            self.lista_libri
+
         )
+
+        # chiama il controller per riempire i menu
+        if self.controller:
+            self.controller.popola_dropdown()
 
         self.page.scroll = "adaptive"
         self.page.update()
+
 
     def cambia_tema(self, e):
         """ Cambia tema scuro/chiaro """
